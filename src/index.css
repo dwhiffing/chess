@@ -1,0 +1,27 @@
+.header {
+  padding: 10px;
+  border-bottom: 1px solid gray;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+}
+
+.actions {
+  border-top: 1px solid gray;
+  background-color: white;
+  padding: 10px;
+  min-height: 50px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.card {
+  margin: 2px;
+  padding: 10px;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
