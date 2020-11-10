@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import { INITIAL_GRID } from '../constants'
 import {
   getPossibleMoves,
   getMove,
   getIsInCheck,
   getIsInCheckMate,
   getIsInStaleMate,
-} from './chess'
+  getInitialGrid,
+} from '../../lib/chess'
 
 export const useChess = () => {
-  const [grid, setGrid] = useState(INITIAL_GRID)
+  const [grid, setGrid] = useState(getInitialGrid())
   const [turnIndex, setTurnIndex] = useState(0)
 
   const moveTile = (a, b) => {

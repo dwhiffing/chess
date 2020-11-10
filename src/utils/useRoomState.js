@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 export const useRoomState = ({ room, setRoom }) => {
-  const [serverState, setServerState] = useState({})
+  const [serverState, setServerState] = useState(room.state.toJSON())
 
   useEffect(() => {
     if (!room) return
@@ -13,7 +13,7 @@ export const useRoomState = ({ room, setRoom }) => {
         setServerState({})
         setRoom()
       }
-      setServerState({ ...state })
+      setServerState(state.toJSON())
     })
 
     // room.onMessage('message', (opts) => {

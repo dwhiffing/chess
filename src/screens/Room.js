@@ -10,8 +10,10 @@ export function Room({ room, setRoom }) {
   const [selectedTile, selectTile] = useState()
   const chess = useChess()
 
+  console.log(roomState)
+
   const handleClickTile = ({ tile }) => {
-    if (chess.inCheckMate) return
+    if (roomState.inCheckMate) return
     const tileType =
       tile.value && tile.value === tile.value.toLowerCase() ? 0 : 1
 
@@ -21,6 +23,7 @@ export function Room({ room, setRoom }) {
       }
 
       if (chess.canTileMove(selectedTile, tile)) {
+        room.send('Move', { from: selectedTile, to: tile })
         chess.moveTile(selectedTile, tile)
       }
 
@@ -28,20 +31,20 @@ export function Room({ room, setRoom }) {
       return
     }
 
-    if (tile.value && chess.turnIndex === tileType) selectTile(tile)
+    if (tile.value && roomState.turnIndex === tileType) selectTile(tile)
   }
 
   return (
     <Flex variant="column">
       <Action onClick={() => room.leave()}>Leave</Action>
-      {chess.inStaleMate && 'Stalemate!'}
-      {chess.inCheckMate &&
-        `Checkmate! ${chess.turnIndex === 0 ? 'Black' : 'White'} Wins`}
+      {roomState.inStaleMate && 'Stalemate!'}
+      {roomState.inCheckMate &&
+        `Checkmate! ${roomState.turnIndex === 0 ? 'Black' : 'White'} Wins`}
       <div className="grid">
-        {chess.grid.map((tile) => {
+        {roomState.grid.map((tile) => {
           const isMarked = selectedTile && chess.canTileMove(selectedTile, tile)
           const isTurn =
-            chess.turnIndex === 1
+            roomState.turnIndex === 1
               ? tile.value && tile.value === tile.value.toUpperCase()
               : tile.value && tile.value === tile.value.toLowerCase()
 

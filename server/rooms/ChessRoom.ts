@@ -2,6 +2,7 @@ import { Room, Client, ServerError } from 'colyseus'
 import { RoomState } from '../schema'
 import { Dispatcher } from "@colyseus/command"
 import * as Commands from '../commands'
+import chess from '../../lib/chess'
 
 export class ChessRoom extends Room<RoomState> {
   maxClients = 10

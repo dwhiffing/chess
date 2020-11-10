@@ -1,2 +1,2 @@
 export { Player } from './Player'
-export { RoomState } from './RoomState'
+export { RoomState, Tile } from './RoomState'
