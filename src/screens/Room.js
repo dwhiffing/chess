@@ -1,19 +1,20 @@
 import React, { useState } from 'react'
 import { Flex } from '../components/Flex'
 import { Action } from '../components/Action'
-import { Tile } from '../components/Tile'
 import { useRoomState } from '../utils/useRoomState'
-import { useChess } from '../utils/useChess'
+import { ChessRoom } from '../components/ChessRoom'
 
 export function Room({ room, setRoom }) {
   const [roomState] = useRoomState({ room, setRoom })
   const [selectedTile, selectTile] = useState()
-  const chess = useChess()
-
-  console.log(roomState)
+  const clientPlayer = (roomState.players || []).find(
+    (p) => p.id === room.sessionId,
+  )
 
   const handleClickTile = ({ tile }) => {
-    if (roomState.inCheckMate) return
+    if (roomState.inCheckMate || clientPlayer.team !== roomState.turnIndex)
+      return
+
     const tileType =
       tile.value && tile.value === tile.value.toLowerCase() ? 0 : 1
 
@@ -22,10 +23,7 @@ export function Room({ room, setRoom }) {
         return selectTile(null)
       }
 
-      if (chess.canTileMove(selectedTile, tile)) {
-        room.send('Move', { from: selectedTile, to: tile })
-        chess.moveTile(selectedTile, tile)
-      }
+      room.send('Move', { from: selectedTile, to: tile })
 
       selectTile(null)
       return
@@ -37,27 +35,11 @@ export function Room({ room, setRoom }) {
   return (
     <Flex variant="column">
       <Action onClick={() => room.leave()}>Leave</Action>
-      {roomState.inStaleMate && 'Stalemate!'}
-      {roomState.inCheckMate &&
-        `Checkmate! ${roomState.turnIndex === 0 ? 'Black' : 'White'} Wins`}
-      <div className="grid">
-        {roomState.grid.map((tile) => {
-          const isMarked = selectedTile && chess.canTileMove(selectedTile, tile)
-          const isTurn =
-            roomState.turnIndex === 1
-              ? tile.value && tile.value === tile.value.toUpperCase()
-              : tile.value && tile.value === tile.value.toLowerCase()
-
-          return (
-            <Tile
-              key={tile.index}
-              selectedTile={selectedTile}
-              tile={{ ...tile, isTurn, isMarked }}
-              onClick={handleClickTile}
-            />
-          )
-        })}
-      </div>
+      <ChessRoom
+        {...roomState}
+        selectedTile={selectedTile}
+        handleClickTile={handleClickTile}
+      />
     </Flex>
   )
 }

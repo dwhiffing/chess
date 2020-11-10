@@ -10,13 +10,10 @@ export class Player extends Schema {
   name = ''
 
   @type('number')
-  role = 0
+  team = -1
 
   @type('boolean')
   connected = true
-
-  @type('boolean')
-  isAdmin = false
 
   @type('number')
   remainingConnectionTime = 0

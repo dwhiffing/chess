@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import { Room } from './screens/Room'
 import { Lobby } from './screens/Lobby'
+import { LocalRoom } from './screens/LocalRoom'
 import { Client } from 'colyseus.js'
 import './index.css'
 
@@ -11,17 +12,20 @@ window.colyseus = new Client(
     : 'ws://localhost:3553',
 )
 
-// TODO: server based gameplay
 // TODO: castling
 // TODO: en passant
 // TODO: AI
 
 function App() {
   const [room, setRoom] = useState()
-  return room ? (
-    <Room room={room} setRoom={setRoom} />
+  const [localRoom, setLocalRoom] = useState()
+  const state = { room, setRoom, localRoom, setLocalRoom }
+  return localRoom ? (
+    <LocalRoom {...state} />
+  ) : room ? (
+    <Room {...state} />
   ) : (
-    <Lobby setRoom={setRoom} />
+    <Lobby {...state} />
   )
 }
 
