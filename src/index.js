@@ -11,6 +11,16 @@ window.colyseus = new Client(
     : 'ws://localhost:3553',
 )
 
+// TODO: clearer indication of current turn
+// TODO: stalemate detection
+// TODO: checkmate detection
+// TODO: win detection
+// TODO: server based gameplay
+
+// TODO: castling
+// TODO: en passant
+// TODO: AI
+
 function App() {
   const [room, setRoom] = useState()
   return room ? (

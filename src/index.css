@@ -9,7 +9,7 @@
   padding-bottom: 100%;
 }
 
-.tile > img {
+.tile > div {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -30,4 +30,38 @@
 
 .dark {
   background-color: #555;
+}
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.mark {
+  position: absolute;
+  top: calc(50% - 2vw);
+  left: calc(50% - 2vw);
+  background-color: #000a;
+  width: 4vw;
+  height: 4vw;
+  border-radius: 2vw;
+}
+
+.tile img {
+  opacity: 0.5;
+}
+
+.tile.turn img {
+  opacity: 1;
+}
+
+.attack {
+  position: absolute;
+  top: calc(50% - 6vw);
+  left: calc(50% - 6vw);
+  box-sizing: border-box;
+  /* background-color: #f00a; */
+  border: 6px solid #f00a;
+  width: 12vw;
+  height: 12vw;
+  border-radius: 6vw;
 }
