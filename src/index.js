@@ -8,7 +8,7 @@ import './index.css'
 
 window.colyseus = new Client(
   process.env.NODE_ENV === 'production'
-    ? 'wss://daniel-online-chess.herokuapp.com'
+    ? 'wss://daniel-chess.herokuapp.com'
     : 'ws://localhost:3553',
 )
 
