@@ -1,19 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Flex } from '../components/Flex'
 import { Action } from '../components/Action'
-import P from '../assets/bP.png'
-import p from '../assets/wP.png'
-import Q from '../assets/bQ.png'
-import q from '../assets/wQ.png'
-import K from '../assets/bK.png'
-import k from '../assets/wK.png'
-import B from '../assets/bB.png'
-import b from '../assets/wB.png'
-import R from '../assets/bR.png'
-import r from '../assets/wR.png'
-import N from '../assets/bN.png'
-import n from '../assets/wN.png'
-const icons = { P, p, Q, q, K, k, B, b, R, r, N, n }
+import * as icons from '../assets'
 
 const initialGrid =
   'RNBQKBNRPPPPPPPP                                pppppppprnbqkbnr'
@@ -22,6 +10,42 @@ export function Room({ room, setRoom }) {
   const [grid, setGrid] = useState(
     initialGrid.split('').map((i, index) => ({ value: i, index })),
   )
+  const [highlightedTile, setHighlightedTile] = useState([])
+  const [selectedTile, setSelectedTile] = useState()
+
+  const handleClickTile = useCallback(
+    ({ isOnActiveTeam, tile, isHighlighted, reachableCoords }) => {
+      if (selectedTile) {
+        // if (otherUnit) battle.grid.withdrawUnit(otherUnit.id)
+        setGrid((g) =>
+          g.map((_tile) => ({
+            ..._tile,
+            value:
+              _tile.index === tile.index
+                ? selectedTile.value
+                : _tile.index === selectedTile.index
+                ? tile.value
+                : _tile.value,
+          })),
+        )
+
+        setSelectedTile(undefined)
+        setHighlightedTile(undefined)
+
+        // battle.nextTurn()
+
+        return
+      }
+      if (selectedTile && selectedTile.index === tile.index) {
+        setSelectedTile(undefined)
+      } else {
+        setSelectedTile(tile)
+        setHighlightedTile(undefined)
+      }
+    },
+    [setSelectedTile, selectedTile, setHighlightedTile],
+  )
+
   useEffect(() => {
     if (!room) return
 
@@ -49,32 +73,46 @@ export function Room({ room, setRoom }) {
 
   return (
     <Flex variant="column">
-      <Action
-        onClick={() => {
-          room.leave()
-        }}
-      >
-        Leave
-      </Action>
-      <Grid grid={grid} renderItem={(tile) => <Tile tile={tile} />} />
+      <Action onClick={() => room.leave()}>Leave</Action>
+      <div className="grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
+        {grid.map((tile) => {
+          const isOnActiveTeam = true
+          const reachableCoords = []
+          const isHighlighted = highlightedTile === tile
+          return (
+            <Tile
+              tile={tile}
+              isSelected={selectedTile === tile}
+              isHighlighted={highlightedTile === tile}
+              onMouseEnter={() => setHighlightedTile(tile)}
+              onClick={() =>
+                handleClickTile({
+                  isOnActiveTeam,
+                  isHighlighted,
+                  tile,
+                  reachableCoords,
+                })
+              }
+            />
+          )
+        })}
+      </div>
     </Flex>
   )
 }
 
-const Tile = ({ tile }) => (
+const Tile = ({ tile, isHighlighted, isSelected, onClick, onMouseEnter }) => (
   <div
-    className={`tile ${
+    onClick={onClick}
+    onMouseEnter={onMouseEnter}
+    className={`tile ${isHighlighted ? 'highlighted' : ''} ${
+      isSelected ? 'selected' : ''
+    } ${
       (tile.index + (Math.floor(tile.index / 8) % 2 === 0 ? 1 : 0)) % 2 === 0
         ? 'dark'
         : ''
     }`}
   >
     {tile.value !== ' ' ? <img src={icons[tile.value]} alt="piece" /> : null}
-  </div>
-)
-
-const Grid = ({ grid, renderItem }) => (
-  <div className="grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-    {grid.map((item, index) => renderItem(item, { index }))}
   </div>
 )

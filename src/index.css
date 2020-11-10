@@ -1,6 +1,7 @@
 .tile {
   flex: 1 0 12%;
   position: relative;
+  box-sizing: border-box;
 }
 .tile:before {
   content: '';
@@ -19,6 +20,14 @@
   align-items: center;
 }
 
-.tile.dark {
+.tile.selected:before {
+  background-color: #ff0a;
+}
+
+.tile.highlighted:before {
+  background-color: #ff04;
+}
+
+.dark {
   background-color: #555;
 }
