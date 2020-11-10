@@ -11,6 +11,9 @@ export function OnlineRoom({ room, setRoom }) {
     (p) => p.id === room.sessionId,
   )
 
+  const whitePlayer = roomState.players.find((p) => p.team === 0)
+  const blackPlayer = roomState.players.find((p) => p.team === 1)
+
   const handleClickTile = ({ tile }) => {
     if (roomState.inCheckMate || clientPlayer.team !== roomState.turnIndex)
       return
@@ -35,11 +38,15 @@ export function OnlineRoom({ room, setRoom }) {
   return (
     <Flex className="container" variant="column">
       <Action onClick={() => room.leave()}>Leave</Action>
+      {blackPlayer &&
+        `${blackPlayer.name} ${blackPlayer.connected ? '' : '(disconnected)'}`}
       <ChessRoom
         {...roomState}
         selectedTile={selectedTile}
         handleClickTile={handleClickTile}
       />
+      {whitePlayer &&
+        `${whitePlayer.name} ${whitePlayer.connected ? '' : '(disconnected)'}`}
     </Flex>
   )
 }
