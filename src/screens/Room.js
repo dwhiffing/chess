@@ -7,11 +7,11 @@ import { useChess } from '../utils/useChess'
 
 export function Room({ room, setRoom }) {
   const [roomState] = useRoomState({ room, setRoom })
-  const [hoveredTile, hoverTile] = useState(null)
   const [selectedTile, selectTile] = useState()
   const chess = useChess()
 
   const handleClickTile = ({ tile }) => {
+    if (chess.inCheckMate) return
     const tileType =
       tile.value && tile.value === tile.value.toLowerCase() ? 0 : 1
 
@@ -34,6 +34,9 @@ export function Room({ room, setRoom }) {
   return (
     <Flex variant="column">
       <Action onClick={() => room.leave()}>Leave</Action>
+      {chess.inStaleMate && 'Stalemate!'}
+      {chess.inCheckMate &&
+        `Checkmate! ${chess.turnIndex === 0 ? 'Black' : 'White'} Wins`}
       <div className="grid">
         {chess.grid.map((tile) => {
           const isMarked = selectedTile && chess.canTileMove(selectedTile, tile)
@@ -45,10 +48,8 @@ export function Room({ room, setRoom }) {
           return (
             <Tile
               key={tile.index}
-              hoveredTile={hoveredTile}
               selectedTile={selectedTile}
               tile={{ ...tile, isTurn, isMarked }}
-              onMouseEnter={() => hoverTile(tile)}
               onClick={handleClickTile}
             />
           )

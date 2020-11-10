@@ -1,22 +1,15 @@
 import React from 'react'
 import * as icons from '../assets'
 
-export const Tile = ({
-  tile,
-  hoveredTile,
-  selectedTile,
-  onClick,
-  onMouseEnter,
-}) => {
-  const isHighlighted = hoveredTile && hoveredTile.index === tile.index
+export const Tile = ({ tile, selectedTile, onClick, onMouseEnter }) => {
   const isSelected = selectedTile && selectedTile.index === tile.index
   return (
     <div
-      onClick={() => onClick({ tile, isHighlighted, isSelected })}
+      onClick={() => onClick({ tile })}
       onMouseEnter={onMouseEnter}
       className={`tile ${tile.isTurn ? 'turn' : ''} ${
-        isHighlighted && !isSelected ? 'highlighted' : ''
-      } ${isSelected ? 'selected' : ''} ${
+        isSelected ? 'selected' : ''
+      } ${
         (tile.index + (Math.floor(tile.index / 8) % 2 === 0 ? 1 : 0)) % 2 === 0
           ? 'dark'
           : ''

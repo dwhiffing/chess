@@ -20,11 +20,11 @@
   align-items: center;
 }
 
-.tile.selected:before {
+div.tile.selected:before {
   background-color: #ff0a;
 }
 
-.tile.highlighted:before {
+.tile:hover:before {
   background-color: #ff04;
 }
 
