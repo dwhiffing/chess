@@ -15,7 +15,7 @@ export function OnlineRoom({ room, setRoom }) {
   const blackPlayer = roomState.players.find((p) => p.team === 1)
 
   const handleClickTile = ({ tile }) => {
-    if (roomState.inCheckMate || clientPlayer.team !== roomState.turnIndex)
+    if (roomState.activeCheckmate || clientPlayer.team !== roomState.turnIndex)
       return
 
     const tileType =

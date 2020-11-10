@@ -3,8 +3,8 @@ import { Flex } from '../components/Flex'
 import {
   getPossibleMoves,
   getMove,
-  getIsInCheck,
-  getIsInCheckMate,
+  getActiveCheck,
+  getActiveCheckmate,
   getIsInStaleMate,
   getInitialGrid,
   getAIMove,
@@ -23,13 +23,13 @@ export function LocalRoom({ aiRoom, setLocalRoom, setAIRoom }) {
   const chess = {
     grid,
     turnIndex,
-    inCheck: getIsInCheck(grid, turnIndex),
-    inCheckMate: getIsInCheckMate(grid, turnIndex),
+    activeCheck: getActiveCheck(grid, turnIndex),
+    activeCheckmate: getActiveCheckmate(grid, turnIndex),
     inStaleMate: getIsInStaleMate(grid, turnIndex),
   }
 
   const handleClickTile = ({ tile }) => {
-    if (chess.inCheckMate) return
+    if (chess.activeCheckmate) return
 
     const tileType =
       tile.value && tile.value === tile.value.toLowerCase() ? 0 : 1

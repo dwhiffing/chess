@@ -25,10 +25,10 @@ export class RoomState extends Schema {
   players = new ArraySchema<Player>()
 
   @type('boolean')
-  inCheck = false
+  activeCheck = false
 
   @type('boolean')
-  inCheckMate = false
+  activeCheckmate = false
 
   @type('boolean')
   inStaleMate = false
