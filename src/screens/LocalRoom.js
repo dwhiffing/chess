@@ -7,21 +7,15 @@ import {
   getIsInCheckMate,
   getIsInStaleMate,
   getInitialGrid,
+  getAIMove,
 } from '../../lib/chess'
 import { ChessRoom } from '../components/ChessRoom'
 import { Action } from '../components/Action'
 
-export function LocalRoom({ setLocalRoom }) {
+export function LocalRoom({ aiRoom, setLocalRoom, setAIRoom }) {
   const [grid, setGrid] = useState(getInitialGrid())
   const [turnIndex, setTurnIndex] = useState(0)
   const [selectedTile, selectTile] = useState()
-
-  const moveTile = (a, b) => {
-    if (!a.value) return
-
-    setGrid(getMove(grid, a, b))
-    setTurnIndex((index) => (index === 0 ? 1 : 0))
-  }
 
   const canTileMove = (tileA, tileB) =>
     getPossibleMoves(grid, tileA).includes(tileB.index)
@@ -29,7 +23,6 @@ export function LocalRoom({ setLocalRoom }) {
   const chess = {
     grid,
     turnIndex,
-    moveTile,
     inCheck: getIsInCheck(grid, turnIndex),
     inCheckMate: getIsInCheckMate(grid, turnIndex),
     inStaleMate: getIsInStaleMate(grid, turnIndex),
@@ -46,9 +39,26 @@ export function LocalRoom({ setLocalRoom }) {
         return selectTile(null)
       }
 
-      if (canTileMove(selectedTile, tile)) moveTile(selectedTile, tile)
+      let _grid = chess.grid
+      let _turnIndex = turnIndex
+      if (canTileMove(selectedTile, tile)) {
+        if (!selectedTile.value) return
+
+        _grid = getMove(grid, selectedTile, tile)
+        _turnIndex = _turnIndex === 0 ? 1 : 0
+      }
 
       selectTile(null)
+
+      if (aiRoom) {
+        setTimeout(() => {
+          setGrid(getAIMove(_grid))
+          setTurnIndex(_turnIndex === 0 ? 1 : 0)
+        }, 500)
+      }
+
+      setGrid(_grid)
+      setTurnIndex(_turnIndex)
       return
     }
 
@@ -56,8 +66,15 @@ export function LocalRoom({ setLocalRoom }) {
   }
 
   return (
-    <Flex variant="column">
-      <Action onClick={() => setLocalRoom(false)}>Leave</Action>
+    <Flex className="container" variant="column">
+      <Action
+        onClick={() => {
+          setAIRoom(false)
+          setLocalRoom(false)
+        }}
+      >
+        Leave
+      </Action>
       <ChessRoom
         {...chess}
         selectedTile={selectedTile}

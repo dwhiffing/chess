@@ -1,3 +1,8 @@
+body {
+  margin: 0 5px;
+  position: relative;
+}
+
 .tile {
   flex: 1 0 12%;
   position: relative;
@@ -31,6 +36,12 @@ div.tile.selected:before {
 .dark {
   background-color: #555;
 }
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  width: 100%;
+}
+
 .grid {
   display: flex;
   flex-wrap: wrap;
@@ -38,16 +49,18 @@ div.tile.selected:before {
 
 .mark {
   position: absolute;
-  top: calc(50% - 2vw);
-  left: calc(50% - 2vw);
+  top: calc(50% - 10px);
+  left: calc(50% - 10px);
   background-color: #000a;
-  width: 4vw;
-  height: 4vw;
-  border-radius: 2vw;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
 }
 
 .tile img {
   opacity: 0.5;
+  width: 10vw;
+  max-width: 80px;
 }
 
 .tile.turn img {
@@ -56,12 +69,11 @@ div.tile.selected:before {
 
 .attack {
   position: absolute;
-  top: calc(50% - 6vw);
-  left: calc(50% - 6vw);
+  top: calc(50% - 25px);
+  left: calc(50% - 25px);
   box-sizing: border-box;
-  /* background-color: #f00a; */
   border: 6px solid #f00a;
-  width: 12vw;
-  height: 12vw;
-  border-radius: 6vw;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
 }

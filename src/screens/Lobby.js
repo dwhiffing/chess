@@ -5,7 +5,7 @@ import faker from 'faker'
 import truncate from 'lodash/truncate'
 import { Action } from '../components/Action'
 
-export function Lobby({ setRoom, setLocalRoom }) {
+export function Lobby({ setRoom, setLocalRoom, setAIRoom }) {
   const intervalRef = useRef()
   const autoConnectAttempted = useRef(false)
   const [availableRooms, setAvailableRooms] = useState([])
@@ -100,6 +100,7 @@ export function Lobby({ setRoom, setLocalRoom }) {
 
       <Action onClick={() => createRoom(name)}>Create room</Action>
       <Action onClick={() => setLocalRoom(true)}>Play local game</Action>
+      <Action onClick={() => setAIRoom(true)}>Play local game vs AI</Action>
     </Flex>
   )
 }

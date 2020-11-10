@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
-import { Room } from './screens/Room'
+import { OnlineRoom } from './screens/OnlineRoom'
 import { Lobby } from './screens/Lobby'
 import { LocalRoom } from './screens/LocalRoom'
 import { Client } from 'colyseus.js'
@@ -12,18 +12,15 @@ window.colyseus = new Client(
     : 'ws://localhost:3553',
 )
 
-// TODO: castling
-// TODO: en passant
-// TODO: AI
-
 function App() {
   const [room, setRoom] = useState()
   const [localRoom, setLocalRoom] = useState()
-  const state = { room, setRoom, localRoom, setLocalRoom }
-  return localRoom ? (
+  const [aiRoom, setAIRoom] = useState()
+  const state = { room, setRoom, localRoom, setLocalRoom, aiRoom, setAIRoom }
+  return localRoom || aiRoom ? (
     <LocalRoom {...state} />
   ) : room ? (
-    <Room {...state} />
+    <OnlineRoom {...state} />
   ) : (
     <Lobby {...state} />
   )

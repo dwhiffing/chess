@@ -4,7 +4,7 @@ import { Action } from '../components/Action'
 import { useRoomState } from '../utils/useRoomState'
 import { ChessRoom } from '../components/ChessRoom'
 
-export function Room({ room, setRoom }) {
+export function OnlineRoom({ room, setRoom }) {
   const [roomState] = useRoomState({ room, setRoom })
   const [selectedTile, selectTile] = useState()
   const clientPlayer = (roomState.players || []).find(
@@ -33,7 +33,7 @@ export function Room({ room, setRoom }) {
   }
 
   return (
-    <Flex variant="column">
+    <Flex className="container" variant="column">
       <Action onClick={() => room.leave()}>Leave</Action>
       <ChessRoom
         {...roomState}
