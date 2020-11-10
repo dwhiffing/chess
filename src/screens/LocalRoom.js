@@ -46,19 +46,20 @@ export function LocalRoom({ aiRoom, setLocalRoom, setAIRoom }) {
 
         _grid = getMove(grid, selectedTile, tile)
         _turnIndex = _turnIndex === 0 ? 1 : 0
+
+        if (aiRoom) {
+          setTimeout(() => {
+            setGrid(getAIMove(_grid))
+            setTurnIndex(_turnIndex === 0 ? 1 : 0)
+          }, 500)
+        }
+
+        setGrid(_grid)
+        setTurnIndex(_turnIndex)
       }
 
       selectTile(null)
 
-      if (aiRoom) {
-        setTimeout(() => {
-          setGrid(getAIMove(_grid))
-          setTurnIndex(_turnIndex === 0 ? 1 : 0)
-        }, 500)
-      }
-
-      setGrid(_grid)
-      setTurnIndex(_turnIndex)
       return
     }
 
