@@ -16,6 +16,7 @@ export function LocalRoom({ aiRoom, setLocalRoom, setAIRoom }) {
   const [grid, setGrid] = useState(getInitialGrid())
   const [turnIndex, setTurnIndex] = useState(0)
   const [selectedTile, selectTile] = useState()
+  const [lastMoveIndex, setLastMoveIndex] = useState([])
 
   const canTileMove = (tileA, tileB) =>
     getPossibleMoves(grid, tileA).includes(tileB.index)
@@ -23,6 +24,7 @@ export function LocalRoom({ aiRoom, setLocalRoom, setAIRoom }) {
   const chess = {
     grid,
     turnIndex,
+    lastMoveIndex,
     activeCheck: getActiveCheck(grid, turnIndex),
     activeCheckmate: getActiveCheckmate(grid, turnIndex),
     inStaleMate: getIsInStaleMate(grid, turnIndex),
@@ -44,6 +46,7 @@ export function LocalRoom({ aiRoom, setLocalRoom, setAIRoom }) {
       if (canTileMove(selectedTile, tile)) {
         if (!selectedTile.value) return
 
+        setLastMoveIndex([selectedTile.index, tile.index])
         _grid = getMove(grid, selectedTile, tile)
         _turnIndex = _turnIndex === 0 ? 1 : 0
 

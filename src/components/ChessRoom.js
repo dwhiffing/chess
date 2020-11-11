@@ -2,15 +2,13 @@ import React from 'react'
 import { Tile } from './Tile'
 import { getPossibleMoves } from '../../lib/chess'
 
-// TODO: highlight opponent last move
-// TODO: animate moves
-// TODO: highlight check
-// TODO: highlight checkmate
 // TODO: highlight stalemate
+// TODO: animate moves
 
 export function ChessRoom({
   grid,
   turnIndex,
+  lastMoveIndex,
   activeCheckmate,
   activeCheck,
   inStaleMate,
@@ -38,6 +36,7 @@ export function ChessRoom({
             <Tile
               key={tile.index}
               selectedTile={selectedTile}
+              lastMoveIndex={lastMoveIndex}
               tile={{ ...tile, isTurn, isMarked, activeCheck }}
               onClick={handleClickTile}
             />

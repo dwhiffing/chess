@@ -21,6 +21,9 @@ export class RoomState extends Schema {
   @type("number")
   turnIndex: number;
 
+  @type(["number"])
+  lastMoveIndex;
+
   @type([Player])
   players = new ArraySchema<Player>()
 

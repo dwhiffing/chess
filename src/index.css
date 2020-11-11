@@ -81,3 +81,7 @@ div.tile.selected:before {
 .tile.check {
   background-color: #f00a;
 }
+
+.last-move {
+  background-color: #00f3;
+}

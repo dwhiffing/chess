@@ -15,5 +15,6 @@ export class MoveCommand extends Command<RoomState, { from: any, to: any }> {
     this.state.grid = new ArraySchema()
     newGrid.forEach(g => this.state.grid.push(new Tile(g)))
     this.state.turnIndex = this.state.turnIndex === 1 ? 0 : 1
+    this.state.lastMoveIndex = [from, to]
   }
 }
