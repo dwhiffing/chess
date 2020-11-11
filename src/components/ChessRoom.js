@@ -2,9 +2,6 @@ import React from 'react'
 import { Tile } from './Tile'
 import { getPossibleMoves } from '../../lib/chess'
 
-// TODO: highlight stalemate
-// TODO: animate moves
-
 export function ChessRoom({
   grid,
   turnIndex,
