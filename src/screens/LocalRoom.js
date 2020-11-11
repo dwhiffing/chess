@@ -44,7 +44,7 @@ export function LocalRoom({ aiRoom, setLocalRoom, setAIRoom }) {
     setTurnIndex((i) => (i === 0 ? 1 : 0))
     setGrid((grid) => {
       setPassantIndex(getPassantIndex(a, b))
-      setCastleStatus(getCastleStatus(castleStatus, a))
+      setCastleStatus((cs) => getCastleStatus(cs, a))
       return performMove(grid, a, b)
     })
   }
@@ -65,7 +65,16 @@ export function LocalRoom({ aiRoom, setLocalRoom, setAIRoom }) {
 
         moveTiles(selectedTile, tile)
 
-        if (aiRoom) setTimeout(() => moveTiles(...getAIMove(grid)), 500)
+        if (aiRoom)
+          setTimeout(
+            () =>
+              setGrid((grid) => {
+                const move = getAIMove(grid)
+                move && moveTiles(...move)
+                return grid
+              }),
+            500,
+          )
       }
 
       return selectTile(null)
