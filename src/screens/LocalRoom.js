@@ -47,6 +47,17 @@ export function LocalRoom({ aiRoom, setLocalRoom, setAIRoom }) {
     }
   }
 
+  const checkCastle = (a) => {
+    // handle castle status after move
+    // TODO: need to handle which rook was moved and only disable that side for castling, and move to chess lib
+    if (a.value === 'k' || a.value === 'r') {
+      setCastleStatus((c) => c.replace(/kq/, ''))
+    }
+    if (a.value === 'K' || a.value === 'R') {
+      setCastleStatus((c) => c.replace(/KQ/, ''))
+    }
+  }
+
   const handleClickTile = ({ tile }) => {
     if (chess.activeCheckmate) return
 
@@ -64,15 +75,7 @@ export function LocalRoom({ aiRoom, setLocalRoom, setAIRoom }) {
         if (!selectedTile.value) return
 
         checkPassant(selectedTile, tile)
-
-        // TODO: refactor
-        // handle castle status after move
-        if (selectedTile.value === 'k' || selectedTile.value === 'r') {
-          setCastleStatus((c) => c.replace(/kq/, ''))
-        }
-        if (selectedTile.value === 'K' || selectedTile.value === 'R') {
-          setCastleStatus((c) => c.replace(/KQ/, ''))
-        }
+        checkCastle(selectedTile, tile)
 
         setLastMoveIndex([selectedTile.index, tile.index])
         _grid = performMove(grid, selectedTile, tile)
@@ -83,6 +86,7 @@ export function LocalRoom({ aiRoom, setLocalRoom, setAIRoom }) {
             const aiMove = getAIMove(_grid)
             setGrid(performMove(_grid, aiMove.from, aiMove.to))
             checkPassant(aiMove.from, aiMove.to)
+            checkCastle(aiMove.from, aiMove.to)
             setTurnIndex(_turnIndex === 0 ? 1 : 0)
           }, 500)
         }

@@ -4,8 +4,6 @@ import { Action } from '../components/Action'
 import { useRoomState } from '../utils/useRoomState'
 import { ChessRoom } from '../components/ChessRoom'
 
-// TODO: needs to handle passant and castle state
-
 export function OnlineRoom({ room, setRoom }) {
   const [roomState] = useRoomState({ room, setRoom })
   const [selectedTile, selectTile] = useState()

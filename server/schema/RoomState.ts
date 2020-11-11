@@ -18,11 +18,17 @@ export class Tile extends Schema {
 
 export class RoomState extends Schema {
 
+  @type("string")
+  castleStatus: string;
+
   @type("number")
   turnIndex: number;
 
   @type(["number"])
   lastMoveIndex;
+
+  @type("number")
+  passantIndex;
 
   @type([Player])
   players = new ArraySchema<Player>();
@@ -42,7 +48,8 @@ export class RoomState extends Schema {
   constructor() {
     super()
     this.turnIndex = 0;
-    const grid = chess.getInitialGrid()
-    grid.forEach(g => this.grid.push(new Tile(g)))
+    this.castleStatus = 'KQkq';
+    const grid = chess.getInitialGrid();
+    grid.forEach(g => this.grid.push(new Tile(g)));
   }
 }
