@@ -8,6 +8,8 @@ import {
   getInitialGrid,
   getAIMove,
   performMove,
+  getPassantIndex,
+  getCastleStatus,
 } from '../../lib/chess'
 import { ChessRoom } from '../components/ChessRoom'
 import { Action } from '../components/Action'
@@ -37,25 +39,14 @@ export function LocalRoom({ aiRoom, setLocalRoom, setAIRoom }) {
     inStaleMate: getIsInStaleMate(grid, turnIndex),
   }
 
-  const checkPassant = (a, b) => {
-    // TODO: refactor
-    // set passant index
-    if (a.value.toLowerCase() === 'p' && Math.abs(a.index - b.index) > 8) {
-      setPassantIndex(a.index + (a.value === a.value.toLowerCase() ? -8 : 8))
-    } else {
-      setPassantIndex(null)
-    }
-  }
-
-  const checkCastle = (a) => {
-    // handle castle status after move
-    // TODO: need to handle which rook was moved and only disable that side for castling, and move to chess lib
-    if (a.value === 'k' || a.value === 'r') {
-      setCastleStatus((c) => c.replace(/kq/, ''))
-    }
-    if (a.value === 'K' || a.value === 'R') {
-      setCastleStatus((c) => c.replace(/KQ/, ''))
-    }
+  const moveTiles = (a, b) => {
+    setLastMoveIndex([a.index, b.index])
+    setTurnIndex((i) => (i === 0 ? 1 : 0))
+    setGrid((grid) => {
+      setPassantIndex(getPassantIndex(a, b))
+      setCastleStatus(getCastleStatus(castleStatus, a))
+      return performMove(grid, a, b)
+    })
   }
 
   const handleClickTile = ({ tile }) => {
@@ -69,38 +60,19 @@ export function LocalRoom({ aiRoom, setLocalRoom, setAIRoom }) {
         return selectTile(null)
       }
 
-      let _grid = chess.grid
-      let _turnIndex = turnIndex
       if (canTileMove(selectedTile, tile)) {
         if (!selectedTile.value) return
 
-        checkPassant(selectedTile, tile)
-        checkCastle(selectedTile, tile)
+        moveTiles(selectedTile, tile)
 
-        setLastMoveIndex([selectedTile.index, tile.index])
-        _grid = performMove(grid, selectedTile, tile)
-        _turnIndex = _turnIndex === 0 ? 1 : 0
-
-        if (aiRoom) {
-          setTimeout(() => {
-            const aiMove = getAIMove(_grid)
-            setGrid(performMove(_grid, aiMove.from, aiMove.to))
-            checkPassant(aiMove.from, aiMove.to)
-            checkCastle(aiMove.from, aiMove.to)
-            setTurnIndex(_turnIndex === 0 ? 1 : 0)
-          }, 500)
-        }
-
-        setGrid(_grid)
-        setTurnIndex(_turnIndex)
+        if (aiRoom) setTimeout(() => moveTiles(...getAIMove(grid)), 500)
       }
 
-      selectTile(null)
-
-      return
+      return selectTile(null)
     }
 
-    if (tile.value && chess.turnIndex === tileType) selectTile(tile)
+    if (tile.value && chess.turnIndex === (aiRoom ? 0 : tileType))
+      selectTile(tile)
   }
 
   return (
