@@ -11,7 +11,7 @@ export class MoveCommand extends Command<RoomState, { from: any, to: any }> {
   }
   
   execute({ from, to }) {
-    const newGrid = chess.getMove(this.state.grid, from, to)
+    const newGrid = chess.performMove(this.state.grid, from, to)
     this.state.grid = new ArraySchema()
     newGrid.forEach(g => this.state.grid.push(new Tile(g)))
     this.state.turnIndex = this.state.turnIndex === 1 ? 0 : 1

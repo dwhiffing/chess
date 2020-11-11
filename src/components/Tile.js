@@ -4,6 +4,7 @@ import * as icons from '../assets'
 export const Tile = ({
   tile,
   selectedTile,
+  passantIndex,
   onClick,
   onMouseEnter,
   lastMoveIndex,
@@ -32,7 +33,11 @@ export const Tile = ({
       <div>
         {tile.value ? <img src={icons[tile.value]} alt="piece" /> : null}
         {tile.isMarked ? (
-          <div className={tile.value ? 'attack' : 'mark'} />
+          <div
+            className={
+              tile.value || tile.index === passantIndex ? 'attack' : 'mark'
+            }
+          />
         ) : null}
       </div>
     </div>

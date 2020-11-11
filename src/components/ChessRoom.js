@@ -11,6 +11,7 @@ export function ChessRoom({
   inStaleMate,
   selectedTile,
   handleClickTile,
+  passantIndex,
 }) {
   if (!grid) return null
 
@@ -23,7 +24,9 @@ export function ChessRoom({
         {grid.map((tile) => {
           const isMarked =
             selectedTile &&
-            getPossibleMoves(grid, selectedTile).includes(tile.index)
+            getPossibleMoves(grid, selectedTile, { passantIndex }).includes(
+              tile.index,
+            )
           const isTurn =
             turnIndex === 1
               ? tile.value && tile.value === tile.value.toUpperCase()
@@ -34,6 +37,7 @@ export function ChessRoom({
               key={tile.index}
               selectedTile={selectedTile}
               lastMoveIndex={lastMoveIndex}
+              passantIndex={passantIndex}
               tile={{ ...tile, isTurn, isMarked, activeCheck }}
               onClick={handleClickTile}
             />
