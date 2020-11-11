@@ -4,6 +4,8 @@ import { Action } from '../components/Action'
 import { useRoomState } from '../utils/useRoomState'
 import { ChessRoom } from '../components/ChessRoom'
 
+// TODO: needs to handle passant and castle state
+
 export function OnlineRoom({ room, setRoom }) {
   const [roomState] = useRoomState({ room, setRoom })
   const [selectedTile, selectTile] = useState()
@@ -11,8 +13,8 @@ export function OnlineRoom({ room, setRoom }) {
     (p) => p.id === room.sessionId,
   )
 
-  const whitePlayer = roomState.players.find((p) => p.team === 0)
-  const blackPlayer = roomState.players.find((p) => p.team === 1)
+  const whitePlayer = (roomState.players || []).find((p) => p.team === 0)
+  const blackPlayer = (roomState.players || []).find((p) => p.team === 1)
 
   const handleClickTile = ({ tile }) => {
     if (roomState.activeCheckmate || clientPlayer.team !== roomState.turnIndex)
@@ -42,6 +44,11 @@ export function OnlineRoom({ room, setRoom }) {
         `${blackPlayer.name} ${blackPlayer.connected ? '' : '(disconnected)'}`}
       <ChessRoom
         {...roomState}
+        activeCheck={
+          roomState.activeCheck && roomState.activeCheck.length > 0
+            ? roomState.activeCheck
+            : false
+        }
         selectedTile={selectedTile}
         handleClickTile={handleClickTile}
       />

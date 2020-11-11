@@ -25,19 +25,19 @@ export class RoomState extends Schema {
   lastMoveIndex;
 
   @type([Player])
-  players = new ArraySchema<Player>()
+  players = new ArraySchema<Player>();
+
+  @type(["number"])
+  activeCheck = [];
 
   @type('boolean')
-  activeCheck = false
+  activeCheckmate = false;
 
   @type('boolean')
-  activeCheckmate = false
-
-  @type('boolean')
-  inStaleMate = false
+  inStaleMate = false;
 
   @type([Tile])
-  grid = new ArraySchema<Tile>()
+  grid = new ArraySchema<Tile>();
   
   constructor() {
     super()

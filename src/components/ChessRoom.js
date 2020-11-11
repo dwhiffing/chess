@@ -12,6 +12,7 @@ export function ChessRoom({
   selectedTile,
   handleClickTile,
   passantIndex,
+  castleStatus,
 }) {
   if (!grid) return null
 
@@ -24,9 +25,10 @@ export function ChessRoom({
         {grid.map((tile) => {
           const isMarked =
             selectedTile &&
-            getPossibleMoves(grid, selectedTile, { passantIndex }).includes(
-              tile.index,
-            )
+            getPossibleMoves(grid, selectedTile, {
+              passantIndex,
+              castleStatus,
+            }).includes(tile.index)
           const isTurn =
             turnIndex === 1
               ? tile.value && tile.value === tile.value.toUpperCase()

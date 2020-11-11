@@ -15,6 +15,9 @@ export class MoveCommand extends Command<RoomState, { from: any, to: any }> {
     this.state.grid = new ArraySchema()
     newGrid.forEach(g => this.state.grid.push(new Tile(g)))
     this.state.turnIndex = this.state.turnIndex === 1 ? 0 : 1
-    this.state.lastMoveIndex = [from, to]
+    this.state.lastMoveIndex = [from.index, to.index]
+    this.state.activeCheck = chess.getActiveCheck(this.state.grid, this.state.turnIndex)
+    this.state.activeCheckmate = chess.getActiveCheckmate(this.state.grid, this.state.turnIndex)
+    this.state.inStaleMate = chess.getIsInStaleMate(this.state.grid, this.state.turnIndex)
   }
 }

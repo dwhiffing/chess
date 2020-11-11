@@ -17,19 +17,34 @@ export function LocalRoom({ aiRoom, setLocalRoom, setAIRoom }) {
   const [turnIndex, setTurnIndex] = useState(0)
   const [selectedTile, selectTile] = useState()
   const [passantIndex, setPassantIndex] = useState(null)
+  const [castleStatus, setCastleStatus] = useState('kqKQ')
   const [lastMoveIndex, setLastMoveIndex] = useState([])
 
   const canTileMove = (tileA, tileB) =>
-    getPossibleMoves(grid, tileA, { passantIndex }).includes(tileB.index)
+    getPossibleMoves(grid, tileA, {
+      passantIndex,
+      castleStatus,
+    }).includes(tileB.index)
 
   const chess = {
     grid,
     turnIndex,
     lastMoveIndex,
     passantIndex,
+    castleStatus,
     activeCheck: getActiveCheck(grid, turnIndex),
     activeCheckmate: getActiveCheckmate(grid, turnIndex),
     inStaleMate: getIsInStaleMate(grid, turnIndex),
+  }
+
+  const checkPassant = (a, b) => {
+    // TODO: refactor
+    // set passant index
+    if (a.value.toLowerCase() === 'p' && Math.abs(a.index - b.index) > 8) {
+      setPassantIndex(a.index + (a.value === a.value.toLowerCase() ? -8 : 8))
+    } else {
+      setPassantIndex(null)
+    }
   }
 
   const handleClickTile = ({ tile }) => {
@@ -48,20 +63,15 @@ export function LocalRoom({ aiRoom, setLocalRoom, setAIRoom }) {
       if (canTileMove(selectedTile, tile)) {
         if (!selectedTile.value) return
 
+        checkPassant(selectedTile, tile)
+
         // TODO: refactor
-        // set passant index
-        if (
-          selectedTile.value.toLowerCase() === 'p' &&
-          Math.abs(selectedTile.index - tile.index) > 8
-        ) {
-          setPassantIndex(
-            selectedTile.index +
-              (selectedTile.value === selectedTile.value.toLowerCase()
-                ? -8
-                : 8),
-          )
-        } else {
-          setPassantIndex(null)
+        // handle castle status after move
+        if (selectedTile.value === 'k' || selectedTile.value === 'r') {
+          setCastleStatus((c) => c.replace(/kq/, ''))
+        }
+        if (selectedTile.value === 'K' || selectedTile.value === 'R') {
+          setCastleStatus((c) => c.replace(/KQ/, ''))
         }
 
         setLastMoveIndex([selectedTile.index, tile.index])
@@ -71,7 +81,8 @@ export function LocalRoom({ aiRoom, setLocalRoom, setAIRoom }) {
         if (aiRoom) {
           setTimeout(() => {
             const aiMove = getAIMove(_grid)
-            setGrid(performMove(aiMove))
+            setGrid(performMove(_grid, aiMove.from, aiMove.to))
+            checkPassant(aiMove.from, aiMove.to)
             setTurnIndex(_turnIndex === 0 ? 1 : 0)
           }, 500)
         }
