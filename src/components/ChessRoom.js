@@ -3,6 +3,7 @@ import { Tile } from './Tile'
 import { getPossibleMoves } from '../../lib/chess'
 
 export function ChessRoom({
+  alternate,
   grid,
   turnIndex,
   lastMoveIndex,
@@ -37,6 +38,7 @@ export function ChessRoom({
           return (
             <Tile
               key={tile.index}
+              alternate={alternate}
               selectedTile={selectedTile}
               lastMoveIndex={lastMoveIndex}
               passantIndex={passantIndex}

@@ -1,8 +1,10 @@
 import React from 'react'
 import * as icons from '../assets'
+import * as altIcons from '../assets/mini'
 import { config } from '../../lib/chess'
 
 export const Tile = ({
+  alternate,
   tile,
   selectedTile,
   passantIndex,
@@ -40,7 +42,13 @@ export const Tile = ({
       style={{ flex: `0 0 ${100 / config.width}%` }}
     >
       <div>
-        {tile.value ? <img src={icons[tile.value]} alt="piece" /> : null}
+        {tile.value ? (
+          <img
+            src={alternate ? altIcons[tile.value] : icons[tile.value]}
+            style={{ width: alternate ? null : '10vw' }}
+            alt="piece"
+          />
+        ) : null}
         {tile.isMarked ? (
           <div
             className={
