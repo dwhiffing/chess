@@ -99,7 +99,7 @@ export function MinichessRoom({ aiRoom, setLocalRoom, setAIRoom }) {
   }
 
   return (
-    <Flex className="container" variant="column">
+    <Flex className="container mini" variant="column">
       <select
         onChange={(e) => {
           resetGame(e.target.value)

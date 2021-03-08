@@ -5,6 +5,8 @@ import { Lobby } from './screens/Lobby'
 import { LocalRoom } from './screens/LocalRoom'
 import { Client } from 'colyseus.js'
 import { MinichessRoom } from './screens/MinichessRoom'
+import './index.css'
+import './mini.css'
 
 window.colyseus = new Client(
   process.env.NODE_ENV === 'production'
@@ -19,11 +21,8 @@ function App() {
   const state = { room, setRoom, localRoom, setLocalRoom, aiRoom, setAIRoom }
 
   if (window.location.search === '?minichess') {
-    require('./mini.css')
     return <MinichessRoom />
   }
-
-  require('./index.css')
 
   return localRoom || aiRoom ? (
     <LocalRoom {...state} />

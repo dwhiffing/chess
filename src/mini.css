@@ -1,102 +1,21 @@
-body {
-  margin: 0 5px;
-  position: relative;
-}
-
-.grid,
-.tile {
+.mini .grid,
+.mini .tile {
   border: dashed 4px #000;
-  border-image-source: url('http://i.stack.imgur.com/wLdVc.png');
+  border-image-source: url('https://i.stack.imgur.com/wLdVc.png');
   border-image-slice: 1;
   border-image-repeat: round;
 }
 
-.grid {
+.mini .grid {
   border-left: 0;
+  border-image-slice: 1;
   border-bottom: 0;
 }
 
-.tile {
-  position: relative;
-  box-sizing: border-box;
+.mini .tile {
   border-right: 0;
   border-top: 0;
 }
-
-.tile:before {
-  content: '';
-  display: block;
-  padding-bottom: 100%;
-}
-
-.tile > div {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-div.tile.selected:before {
-  background-color: #ff0a;
-}
-
-.tile:hover:before {
-  background-color: #ff04;
-}
-
-.dark {
-  /* background-color: #555; */
-}
-.container {
-  max-width: 700px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.grid {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.mark {
-  position: absolute;
-  top: calc(50% - 10px);
-  left: calc(50% - 10px);
-  background-color: #000a;
-  width: 20px;
-  height: 20px;
-  border-radius: 10px;
-}
-
-.tile img {
-  opacity: 0.5;
-  width: 10vw;
-  max-width: 80px;
-}
-
-.tile.turn img {
-  opacity: 1;
-}
-
-.attack {
-  position: absolute;
-  top: calc(50% - 25px);
-  left: calc(50% - 25px);
-  box-sizing: border-box;
-  border: 6px solid #f00a;
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
-}
-
-.tile.check {
-  background-color: #f004;
-}
-
-.last-move {
-  background-color: #00f3;
+.mini .dark {
+  background-color: #fff;
 }
