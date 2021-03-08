@@ -4,7 +4,6 @@ body {
 }
 
 .tile {
-  flex: 1 0 12%;
   position: relative;
   box-sizing: border-box;
 }

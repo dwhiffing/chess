@@ -1,5 +1,6 @@
 import React from 'react'
 import * as icons from '../assets'
+import { config } from '../../lib/chess'
 
 export const Tile = ({
   tile,
@@ -16,19 +17,27 @@ export const Tile = ({
     tile.activeCheck.some(
       (c) => c.to.includes(tile.index) || c.from === tile.index,
     )
+  const offset =
+    config.width % 2 === 0
+      ? Math.floor(tile.index / config.width) % 2 === 0
+        ? 1
+        : 0
+      : 0
+  const classes = [
+    'tile',
+    lastMoveIndex.includes(tile.index) && 'last-move',
+    tile.isTurn && 'turn',
+    isSelected && 'selected',
+    highlightCheck && 'check',
+    (tile.index + offset) % 2 === 0 && 'dark',
+  ].filter((s) => !!s)
+
   return (
     <div
       onClick={() => onClick({ tile })}
       onMouseEnter={onMouseEnter}
-      className={`tile ${
-        lastMoveIndex.includes(tile.index) ? 'last-move' : ''
-      } ${highlightCheck ? 'check' : ''} ${tile.isTurn ? 'turn' : ''} ${
-        isSelected ? 'selected' : ''
-      } ${
-        (tile.index + (Math.floor(tile.index / 8) % 2 === 0 ? 1 : 0)) % 2 === 0
-          ? 'dark'
-          : ''
-      }`}
+      className={classes.join(' ')}
+      style={{ flex: `0 0 ${100 / config.width}%` }}
     >
       <div>
         {tile.value ? <img src={icons[tile.value]} alt="piece" /> : null}
