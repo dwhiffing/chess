@@ -30,6 +30,7 @@ export const Tile = ({
     lastMoveIndex.includes(tile.index) && 'last-move',
     tile.isTurn && 'turn',
     isSelected && 'selected',
+    tile.isMarked && 'marked',
     highlightCheck && 'check',
     (tile.index + offset) % 2 === 0 && 'dark',
   ].filter((s) => !!s)
@@ -41,21 +42,18 @@ export const Tile = ({
       className={classes.join(' ')}
       style={{ flex: `0 0 ${100 / config.width}%` }}
     >
-      <div>
+      <div style={{ pointerEvents: 'none', userSelect: 'none' }}>
         {tile.value ? (
           <img
             src={alternate ? altIcons[tile.value] : icons[tile.value]}
-            style={{ width: alternate ? null : '10vw' }}
             alt="piece"
           />
         ) : null}
-        {tile.isMarked ? (
-          <div
-            className={
-              tile.value || tile.index === passantIndex ? 'attack' : 'mark'
-            }
-          />
-        ) : null}
+        <div
+          className={
+            tile.value || tile.index === passantIndex ? 'attack' : 'mark'
+          }
+        />
       </div>
     </div>
   )

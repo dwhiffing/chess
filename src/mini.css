@@ -1,21 +1,44 @@
-.mini .grid,
 .mini .tile {
-  border: dashed 4px #000;
-  border-image-source: url('https://i.stack.imgur.com/wLdVc.png');
-  border-image-slice: 1;
-  border-image-repeat: round;
+  background-image: url('assets/tile.png');
+  background-size: 100%;
+  background-position: center;
+  opacity: 0.3;
+}
+
+.mini .tile img {
+  height: 10vw;
+  max-height: 70px;
+  width: auto;
+}
+
+.mini .tile img,
+.mini .tile {
+  transition: opacity 50ms;
+}
+
+.mini .dark {
+  background-color: #fff;
+}
+
+.mini .tile:hover:before {
+  background-color: transparent;
+}
+
+.mini .tile.selected {
+  opacity: 1;
+}
+
+.mini .tile .mark,
+.mini .tile .attack {
+  opacity: 0;
+}
+
+.mini .tile.marked,
+.mini .tile.marked:hover .mark,
+.mini .tile.marked:hover .attack {
+  opacity: 1;
 }
 
 .mini .grid {
-  border-left: 0;
-  border-image-slice: 1;
-  border-bottom: 0;
-}
-
-.mini .tile {
-  border-right: 0;
-  border-top: 0;
-}
-.mini .dark {
-  background-color: #fff;
+  margin-bottom: 30px;
 }

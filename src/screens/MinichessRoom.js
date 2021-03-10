@@ -13,6 +13,8 @@ import {
   setConfig,
 } from '../../lib/chess'
 import { ChessRoom } from '../components/ChessRoom'
+import { IconButton } from '@material-ui/core'
+import ReplayIcon from '@material-ui/icons/Replay'
 
 export function MinichessRoom({ aiRoom, setLocalRoom, setAIRoom }) {
   const [turnIndex, setTurnIndex] = useState(0)
@@ -22,8 +24,16 @@ export function MinichessRoom({ aiRoom, setLocalRoom, setAIRoom }) {
   const [lastMoveIndex, setLastMoveIndex] = useState([])
   const [grid, setGrid] = useState(getInitialGrid())
 
-  const resetGame = (type = 'petty') => {
-    setConfig(type)
+  const resetGame = (
+    type,
+    shouldConfirm,
+    confirmString = 'Are you sure you want to reset?',
+  ) => {
+    if (shouldConfirm) {
+      const result = window.confirm(confirmString)
+      if (!result) return
+    }
+    type && setConfig(type)
     setTurnIndex(0)
     selectTile()
     setPassantIndex(null)
@@ -79,16 +89,15 @@ export function MinichessRoom({ aiRoom, setLocalRoom, setAIRoom }) {
 
         moveTiles(selectedTile, tile)
 
-        if (aiRoom)
-          setTimeout(
-            () =>
-              setGrid((grid) => {
-                const move = getAIMove(grid)
-                move && moveTiles(...move)
-                return grid
-              }),
-            500,
-          )
+        setTimeout(
+          () =>
+            setGrid((grid) => {
+              const move = getAIMove(grid)
+              move && moveTiles(...move)
+              return grid
+            }),
+          500,
+        )
       }
 
       return selectTile(null)
@@ -98,19 +107,40 @@ export function MinichessRoom({ aiRoom, setLocalRoom, setAIRoom }) {
       selectTile(tile)
   }
 
+  useEffect(() => {
+    if (chess.inStaleMate) {
+      resetGame(undefined, true, 'Stalemate! Do you want to reset?')
+    }
+  }, [chess.inStaleMate])
+
   return (
     <Flex className="container mini" variant="column">
-      <select
-        onChange={(e) => {
-          resetGame(e.target.value)
-        }}
-      >
-        {GAMES.map((g) => (
-          <option key={g}>{g}</option>
-        ))}
-      </select>
+      <Flex style={{ margin: '10px 0' }}>
+        <select
+          style={{
+            flex: 1,
+            fontSize: 14,
+            textTransform: 'uppercase',
+            padding: '0 10px',
+          }}
+          onChange={(e) => {
+            resetGame(e.target.value, true)
+          }}
+        >
+          {GAMES.map((g) => (
+            <option value={g} key={g}>
+              {LABELS[g]}
+            </option>
+          ))}
+        </select>
+        <IconButton onClick={() => resetGame(undefined, true)}>
+          <ReplayIcon />
+        </IconButton>
+      </Flex>
+      {chess.activeCheckmate && chess.turnIndex !== 0 && <WinState />}
       <ChessRoom
         {...chess}
+        inStaleMate={false}
         alternate
         selectedTile={selectedTile}
         handleClickTile={handleClickTile}
@@ -120,3 +150,34 @@ export function MinichessRoom({ aiRoom, setLocalRoom, setAIRoom }) {
 }
 
 const GAMES = ['petty', 'speed', 'quick', 'elena', 'attack', 'minit']
+const LABELS = {
+  petty: 'Petty Chess',
+  speed: 'Speed Chess',
+  attack: 'Chess Attack',
+  quick: 'Quick Chess',
+  elena: 'Elena Chess',
+  minit: 'MiniChess',
+}
+
+const WinState = () => (
+  <Flex
+    variant="center"
+    style={{
+      color: '#03BD0B',
+      fontFamily: 'sans-serif',
+      fontWeight: 500,
+      fontSize: 25,
+      marginTop: 20,
+      marginBottom: 25,
+      lineHeight: '200%',
+      textTransform: 'uppercase',
+    }}
+  >
+    <span style={{ marginRight: 16 }}>You win!</span>
+    <span>🎊</span>
+    <a href="#/" style={{ margin: '0 8px', color: '#F14E6B' }}>
+      Click here
+    </a>
+    <span>🎊</span>
+  </Flex>
+)

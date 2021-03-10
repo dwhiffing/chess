@@ -24,10 +24,6 @@ body {
   align-items: center;
 }
 
-div.tile.selected:before {
-  background-color: #ff0a;
-}
-
 .tile:hover:before {
   background-color: #ff04;
 }
@@ -46,35 +42,31 @@ div.tile.selected:before {
   flex-wrap: wrap;
 }
 
-.mark {
+.mark,
+.attack {
   position: absolute;
-  top: calc(50% - 10px);
-  left: calc(50% - 10px);
-  background-color: #000a;
-  width: 20px;
-  height: 20px;
-  border-radius: 10px;
+  top: calc(50% - min(1vw, 20px));
+  left: calc(50% - min(1vw, 20px));
+  background-color: #228bec;
+  max-width: 20px;
+  max-height: 20px;
+  width: 2vw;
+  height: 2vw;
+  border-radius: 2vw;
+  transition: opacity 50ms;
 }
 
 .tile img {
-  opacity: 0.5;
   width: 10vw;
   max-width: 80px;
 }
 
-.tile.turn img {
+.tile.selected img {
   opacity: 1;
 }
 
 .attack {
-  position: absolute;
-  top: calc(50% - 25px);
-  left: calc(50% - 25px);
-  box-sizing: border-box;
-  border: 6px solid #f00a;
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
+  background-color: #ec2222;
 }
 
 .tile.check {
