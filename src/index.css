@@ -45,8 +45,8 @@ body {
 .mark,
 .attack {
   position: absolute;
-  top: calc(50% - min(1vw, 20px));
-  left: calc(50% - min(1vw, 20px));
+  top: calc(50% - min(1vw, 10px));
+  left: calc(50% - min(1vw, 10px));
   background-color: #228bec;
   max-width: 20px;
   max-height: 20px;
