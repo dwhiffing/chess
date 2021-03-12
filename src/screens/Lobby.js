@@ -5,18 +5,30 @@ import faker from 'faker'
 import truncate from 'lodash/truncate'
 import { Action } from '../components/Action'
 
+const getLocalStorage = (key) => {
+  try {
+    return localStorage.getItem(key)
+  } catch (e) {}
+}
+
+const setLocalStorage = (key, value) => {
+  try {
+    return localStorage.setItem(key, value)
+  } catch (e) {}
+}
+
 export function Lobby({ setRoom, setLocalRoom, setAIRoom }) {
   const intervalRef = useRef()
   const autoConnectAttempted = useRef(false)
   const [availableRooms, setAvailableRooms] = useState([])
   const [name, setName] = useState(
-    localStorage.getItem('name') || faker.name.firstName(),
+    getLocalStorage('name') || faker.name.firstName(),
   )
 
   const enterRoom = useCallback(
     (room, name) => {
-      localStorage.setItem('name', name)
-      localStorage.setItem(room.id, room.sessionId)
+      setLocalStorage('name', name)
+      setLocalStorage(room.id, room.sessionId)
       setRoom(room)
     },
     [setRoom],
@@ -61,9 +73,7 @@ export function Lobby({ setRoom, setLocalRoom, setAIRoom }) {
 
   useEffect(() => {
     if (!availableRooms) return
-    const lastRoom = availableRooms.find((room) =>
-      localStorage.getItem(room.roomId),
-    )
+    const lastRoom = availableRooms.find((room) => getLocalStorage(room.roomId))
 
     if (lastRoom && !autoConnectAttempted.current) {
       autoConnectAttempted.current = true
@@ -118,7 +128,7 @@ const RoomListItem = ({ room, onClick }) => (
 
 const joinRoomWithReconnect = async (roomId, name) => {
   let room,
-    sessionId = localStorage.getItem(roomId)
+    sessionId = getLocalStorage(roomId)
 
   if (sessionId) {
     try {

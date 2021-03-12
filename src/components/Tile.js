@@ -16,9 +16,7 @@ export const Tile = ({
   const highlightCheck =
     tile.activeCheck &&
     tile.value &&
-    tile.activeCheck.some(
-      (c) => c.to.includes(tile.index) || c.from === tile.index,
-    )
+    tile.activeCheck.some((c) => c.to.includes(tile.index))
   const offset =
     config.width % 2 === 0
       ? Math.floor(tile.index / config.width) % 2 === 0
@@ -31,6 +29,7 @@ export const Tile = ({
     tile.isTurn && 'turn',
     isSelected && 'selected',
     tile.isMarked && 'marked',
+    selectedTile && !isSelected && 'muted',
     highlightCheck && 'check',
     (tile.index + offset) % 2 === 0 && 'dark',
   ].filter((s) => !!s)

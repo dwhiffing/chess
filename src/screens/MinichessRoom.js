@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Flex } from '../components/Flex'
 import {
   getPossibleMoves,
@@ -16,13 +16,15 @@ import { ChessRoom } from '../components/ChessRoom'
 import { IconButton } from '@material-ui/core'
 import ReplayIcon from '@material-ui/icons/Replay'
 
+// TODO: sound effect on win
 export function MinichessRoom({ aiRoom, setLocalRoom, setAIRoom }) {
+  const movetimeoutRef = useRef()
   const [turnIndex, setTurnIndex] = useState(0)
   const [selectedTile, selectTile] = useState()
   const [passantIndex, setPassantIndex] = useState(null)
   const [castleStatus, setCastleStatus] = useState('kqKQ')
   const [lastMoveIndex, setLastMoveIndex] = useState([])
-  const [grid, setGrid] = useState(getInitialGrid())
+  const [grid, setGrid] = useState(getInitialGrid('petty'))
 
   const resetGame = (
     type,
@@ -35,6 +37,7 @@ export function MinichessRoom({ aiRoom, setLocalRoom, setAIRoom }) {
     }
     type && setConfig(type)
     setTurnIndex(0)
+    clearTimeout(movetimeoutRef.current)
     selectTile()
     setPassantIndex(null)
     setCastleStatus('kqKQ')
@@ -88,15 +91,15 @@ export function MinichessRoom({ aiRoom, setLocalRoom, setAIRoom }) {
         if (!selectedTile.value) return
 
         moveTiles(selectedTile, tile)
-
-        setTimeout(
+        clearTimeout(movetimeoutRef.current)
+        movetimeoutRef.current = setTimeout(
           () =>
             setGrid((grid) => {
               const move = getAIMove(grid)
               move && moveTiles(...move)
               return grid
             }),
-          500,
+          1000,
         )
       }
 
@@ -112,6 +115,12 @@ export function MinichessRoom({ aiRoom, setLocalRoom, setAIRoom }) {
       resetGame(undefined, true, 'Stalemate! Do you want to reset?')
     }
   }, [chess.inStaleMate])
+
+  useEffect(() => {
+    if (chess.activeCheckmate && chess.turnIndex === 0) {
+      resetGame(undefined, true, 'You lose! Do you want to reset?')
+    }
+  }, [chess.activeCheckmate, chess.turnIndex])
 
   return (
     <Flex className="container mini" variant="column">
@@ -175,7 +184,12 @@ const WinState = () => (
   >
     <span style={{ marginRight: 16 }}>You win!</span>
     <span>🎊</span>
-    <a href="#/" style={{ margin: '0 8px', color: '#F14E6B' }}>
+    <a
+      href="http://1234.56.digital/"
+      target="_blank"
+      rel="noreferrer"
+      style={{ margin: '0 8px', color: '#F14E6B' }}
+    >
       Click here
     </a>
     <span>🎊</span>

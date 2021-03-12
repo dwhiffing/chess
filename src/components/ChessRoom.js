@@ -19,9 +19,9 @@ export function ChessRoom({
 
   return (
     <>
-      {inStaleMate && 'Stalemate!'}
+      {/* {inStaleMate && 'Stalemate!'}
       {activeCheckmate &&
-        `Checkmate! ${turnIndex === 0 ? 'Black' : 'White'} Wins`}
+        `Checkmate! ${turnIndex === 0 ? 'Black' : 'White'} Wins`} */}
       <div className="grid">
         {grid.map((tile) => {
           const isMarked =

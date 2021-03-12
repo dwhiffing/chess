@@ -2,7 +2,16 @@
   background-image: url('assets/tile.png');
   background-size: 100%;
   background-position: center;
+}
+.mini .tile.muted {
   opacity: 0.3;
+}
+.mini .tile.check {
+  opacity: 1;
+  background-image: url('assets/tile-check.png');
+}
+.mini .tile.check img {
+  animation: spin 150ms step-start infinite;
 }
 
 .mini .tile img {
@@ -41,4 +50,16 @@
 
 .mini .grid {
   margin-bottom: 30px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+  100% {
+    transform: rotate(-3deg);
+  }
 }
