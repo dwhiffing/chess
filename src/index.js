@@ -8,11 +8,13 @@ import { MinichessRoom } from './screens/MinichessRoom'
 import './index.css'
 import './mini.css'
 
-window.colyseus = new Client(
-  process.env.NODE_ENV === 'production'
-    ? 'wss://daniel-chess.herokuapp.com'
-    : 'ws://localhost:3553',
-)
+if (window.location.search !== '?minichess') {
+  window.colyseus = new Client(
+    process.env.NODE_ENV === 'production'
+      ? 'wss://daniel-chess.herokuapp.com'
+      : 'ws://localhost:3553',
+  )
+}
 
 function App() {
   const [room, setRoom] = useState()

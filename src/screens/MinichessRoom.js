@@ -15,6 +15,8 @@ import {
 import { ChessRoom } from '../components/ChessRoom'
 import { IconButton } from '@material-ui/core'
 import ReplayIcon from '@material-ui/icons/Replay'
+import useSound from 'use-sound'
+import winSound from '../assets/assets_audio_win.mp3'
 
 // TODO: sound effect on win
 export function MinichessRoom({ aiRoom, setLocalRoom, setAIRoom }) {
@@ -48,6 +50,8 @@ export function MinichessRoom({ aiRoom, setLocalRoom, setAIRoom }) {
   useEffect(() => {
     resetGame('petty')
   }, [])
+
+  const [playWinSound] = useSound(winSound)
 
   const canTileMove = (tileA, tileB) =>
     getPossibleMoves(grid, tileA, {
@@ -120,33 +124,52 @@ export function MinichessRoom({ aiRoom, setLocalRoom, setAIRoom }) {
     if (chess.activeCheckmate && chess.turnIndex === 0) {
       resetGame(undefined, true, 'You lose! Do you want to reset?')
     }
-  }, [chess.activeCheckmate, chess.turnIndex])
+    if (chess.activeCheckmate && chess.turnIndex !== 0) {
+      playWinSound()
+    }
+  }, [chess.activeCheckmate, chess.turnIndex, playWinSound])
 
   return (
-    <Flex className="container mini" variant="column">
-      <Flex style={{ margin: '10px 0' }}>
-        <select
-          style={{
-            flex: 1,
-            fontSize: 14,
-            textTransform: 'uppercase',
-            padding: '0 10px',
-          }}
-          onChange={(e) => {
-            resetGame(e.target.value, true)
-          }}
-        >
-          {GAMES.map((g) => (
-            <option value={g} key={g}>
-              {LABELS[g]}
-            </option>
-          ))}
-        </select>
-        <IconButton onClick={() => resetGame(undefined, true)}>
-          <ReplayIcon />
-        </IconButton>
-      </Flex>
-      {chess.activeCheckmate && chess.turnIndex !== 0 && <WinState />}
+    <Flex
+      className="container mini"
+      variant="column"
+      style={{ overflow: 'hidden' }}
+    >
+      <div
+        style={{
+          height: '35vw',
+          maxHeight: 150,
+          minHeight: 100,
+        }}
+      >
+        <Flex style={{ margin: '10px 0' }}>
+          <select
+            style={{
+              flex: 1,
+              fontSize: 14,
+              textTransform: 'uppercase',
+              padding: '0 10px',
+            }}
+            onChange={(e) => {
+              resetGame(e.target.value, true)
+            }}
+          >
+            {GAMES.map((g) => (
+              <option value={g} key={g}>
+                {LABELS[g]}
+              </option>
+            ))}
+          </select>
+          <IconButton
+            disableRipple
+            disableFocusRipple
+            onClick={() => resetGame(undefined, true)}
+          >
+            <ReplayIcon />
+          </IconButton>
+        </Flex>
+        {chess.activeCheckmate && chess.turnIndex !== 0 && <WinState />}
+      </div>
       <ChessRoom
         {...chess}
         inStaleMate={false}
@@ -175,7 +198,7 @@ const WinState = () => (
       color: '#03BD0B',
       fontFamily: 'sans-serif',
       fontWeight: 500,
-      fontSize: 25,
+      fontSize: 'min(5vw, 30px)',
       marginTop: 20,
       marginBottom: 25,
       lineHeight: '200%',
