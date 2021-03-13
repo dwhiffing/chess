@@ -10,10 +10,6 @@ export const useRoomState = ({ room, setRoom }) => {
       setServerState(state.toJSON())
     })
 
-    // room.onMessage('message', (opts) => {
-    // setMessage(opts)
-    // setTimeout(() => setMessage(''), 5000)
-    // })
     room.onLeave((code) => {
       if (code === 1000) localStorage.removeItem(room.id)
       setServerState({})

@@ -5,6 +5,8 @@ import faker from 'faker'
 import truncate from 'lodash/truncate'
 import { Action } from '../components/Action'
 
+const serverAvailable = true
+
 const getLocalStorage = (key) => {
   try {
     return localStorage.getItem(key)
@@ -66,13 +68,14 @@ export function Lobby({ setRoom, setLocalRoom, setAIRoom }) {
   )
 
   useEffect(() => {
+    if (!serverAvailable) return
     getAvailableRooms()
     intervalRef.current = setInterval(getAvailableRooms, 3000)
     return () => clearInterval(intervalRef.current)
   }, [getAvailableRooms])
 
   useEffect(() => {
-    if (!availableRooms) return
+    if (!serverAvailable || !availableRooms) return
     const lastRoom = availableRooms.find((room) => getLocalStorage(room.roomId))
 
     if (lastRoom && !autoConnectAttempted.current) {
@@ -82,33 +85,39 @@ export function Lobby({ setRoom, setLocalRoom, setAIRoom }) {
   }, [availableRooms, joinRoom, name])
 
   return (
-    <Flex variant="column center" style={{ height: '100vh' }}>
-      <TextField
-        placeholder="Enter name"
-        value={name}
-        style={{ marginBottom: 20 }}
-        onChange={(e) =>
-          setName(truncate(e.target.value, { length: 10, omission: '' }))
-        }
-      />
-
-      <Typography variant="h5">Available Tables:</Typography>
-
-      <Flex flex={0} variant="column center" style={{ minHeight: 200 }}>
-        {availableRooms.length === 0 && (
-          <Typography>No rooms available</Typography>
-        )}
-
-        {availableRooms.map((room) => (
-          <RoomListItem
-            key={room.roomId}
-            room={room}
-            onClick={() => joinRoom(room.roomId, name)}
+    <Flex
+      variant="column center"
+      style={{ backgroundColor: '#333', height: '100vh', color: 'white' }}
+    >
+      {serverAvailable && (
+        <>
+          <TextField
+            placeholder="Enter name"
+            value={name}
+            onChange={(e) =>
+              setName(truncate(e.target.value, { length: 10, omission: '' }))
+            }
           />
-        ))}
-      </Flex>
 
-      <Action onClick={() => createRoom(name)}>Create room</Action>
+          <Typography variant="h5">Available Tables:</Typography>
+
+          <Flex flex={0} variant="column center" style={{ minHeight: 200 }}>
+            {availableRooms.length === 0 && (
+              <Typography>No rooms available</Typography>
+            )}
+
+            {availableRooms.map((room) => (
+              <RoomListItem
+                key={room.roomId}
+                room={room}
+                onClick={() => joinRoom(room.roomId, name)}
+              />
+            ))}
+          </Flex>
+
+          <Action onClick={() => createRoom(name)}>Create room</Action>
+        </>
+      )}
       <Action onClick={() => setLocalRoom(true)}>Play local game</Action>
       <Action onClick={() => setAIRoom(true)}>Play local game vs AI</Action>
     </Flex>

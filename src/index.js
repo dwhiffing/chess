@@ -6,7 +6,6 @@ import { LocalRoom } from './screens/LocalRoom'
 import { Client } from 'colyseus.js'
 import { MinichessRoom } from './screens/MinichessRoom'
 import './index.css'
-import './mini.css'
 
 if (window.location.search !== '?minichess') {
   window.colyseus = new Client(

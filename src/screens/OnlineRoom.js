@@ -36,12 +36,15 @@ export function OnlineRoom({ room, setRoom }) {
   }
 
   return (
-    <Flex className="container" variant="column">
+    <Flex className="container full" variant="column">
       <Action onClick={() => room.leave()}>Leave</Action>
+
       {blackPlayer &&
         `${blackPlayer.name} ${blackPlayer.connected ? '' : '(disconnected)'}`}
+
       <ChessRoom
         {...roomState}
+        showMessages
         activeCheck={
           roomState.activeCheck && roomState.activeCheck.length > 0
             ? roomState.activeCheck
@@ -50,6 +53,7 @@ export function OnlineRoom({ room, setRoom }) {
         selectedTile={selectedTile}
         handleClickTile={handleClickTile}
       />
+
       {whitePlayer &&
         `${whitePlayer.name} ${whitePlayer.connected ? '' : '(disconnected)'}`}
     </Flex>

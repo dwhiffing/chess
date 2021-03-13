@@ -18,25 +18,17 @@ import ReplayIcon from '@material-ui/icons/Replay'
 import useSound from 'use-sound'
 import winSound from '../assets/assets_audio_win.mp3'
 
-// TODO: sound effect on win
-export function MinichessRoom({ aiRoom, setLocalRoom, setAIRoom }) {
+export function MinichessRoom({ aiRoom }) {
   const movetimeoutRef = useRef()
   const [turnIndex, setTurnIndex] = useState(0)
+  const [gameType, setGameType] = useState('petty')
   const [selectedTile, selectTile] = useState()
   const [passantIndex, setPassantIndex] = useState(null)
   const [castleStatus, setCastleStatus] = useState('kqKQ')
   const [lastMoveIndex, setLastMoveIndex] = useState([])
-  const [grid, setGrid] = useState(getInitialGrid('petty'))
+  const [grid, setGrid] = useState(getInitialGrid(gameType))
 
-  const resetGame = (
-    type,
-    shouldConfirm,
-    confirmString = 'Are you sure you want to reset?',
-  ) => {
-    if (shouldConfirm) {
-      const result = window.confirm(confirmString)
-      if (!result) return
-    }
+  const resetGame = (type) => {
     type && setConfig(type)
     setTurnIndex(0)
     clearTimeout(movetimeoutRef.current)
@@ -48,10 +40,13 @@ export function MinichessRoom({ aiRoom, setLocalRoom, setAIRoom }) {
   }
 
   useEffect(() => {
-    resetGame('petty')
-  }, [])
+    resetGame(gameType)
+  }, [gameType])
 
-  const [playWinSound] = useSound(winSound)
+  const [playWinSound] = useSound(winSound, {
+    preload: true,
+    html5: true,
+  })
 
   const canTileMove = (tileA, tileB) =>
     getPossibleMoves(grid, tileA, {
@@ -116,13 +111,15 @@ export function MinichessRoom({ aiRoom, setLocalRoom, setAIRoom }) {
 
   useEffect(() => {
     if (chess.inStaleMate) {
-      resetGame(undefined, true, 'Stalemate! Do you want to reset?')
+      const shouldReset = window.confirm('Stalemate! Do you want to reset?')
+      if (shouldReset) resetGame()
     }
   }, [chess.inStaleMate])
 
   useEffect(() => {
     if (chess.activeCheckmate && chess.turnIndex === 0) {
-      resetGame(undefined, true, 'You lose! Do you want to reset?')
+      const shouldReset = window.confirm('You lose! Do you want to reset?')
+      if (shouldReset) resetGame()
     }
     if (chess.activeCheckmate && chess.turnIndex !== 0) {
       playWinSound()
@@ -130,28 +127,22 @@ export function MinichessRoom({ aiRoom, setLocalRoom, setAIRoom }) {
   }, [chess.activeCheckmate, chess.turnIndex, playWinSound])
 
   return (
-    <Flex
-      className="container mini"
-      variant="column"
-      style={{ overflow: 'hidden' }}
-    >
+    <div className="container mini">
       <div
         style={{
           height: '35vw',
-          maxHeight: 150,
+          maxHeight: 135,
           minHeight: 100,
         }}
       >
-        <Flex style={{ margin: '10px 0' }}>
+        <Flex style={{ margin: '10px auto', maxWidth: 500 }}>
           <select
-            style={{
-              flex: 1,
-              fontSize: 14,
-              textTransform: 'uppercase',
-              padding: '0 10px',
-            }}
+            value={gameType}
             onChange={(e) => {
-              resetGame(e.target.value, true)
+              const shouldReset = window.confirm(
+                'Are you sure you want to reset?',
+              )
+              if (shouldReset) setGameType(e.target.value)
             }}
           >
             {GAMES.map((g) => (
@@ -163,7 +154,12 @@ export function MinichessRoom({ aiRoom, setLocalRoom, setAIRoom }) {
           <IconButton
             disableRipple
             disableFocusRipple
-            onClick={() => resetGame(undefined, true)}
+            onClick={() => {
+              const shouldReset = window.confirm(
+                'Are you sure you want to reset?',
+              )
+              if (shouldReset) resetGame()
+            }}
           >
             <ReplayIcon />
           </IconButton>
@@ -172,12 +168,11 @@ export function MinichessRoom({ aiRoom, setLocalRoom, setAIRoom }) {
       </div>
       <ChessRoom
         {...chess}
-        inStaleMate={false}
         alternate
         selectedTile={selectedTile}
         handleClickTile={handleClickTile}
       />
-    </Flex>
+    </div>
   )
 }
 
@@ -192,27 +187,10 @@ const LABELS = {
 }
 
 const WinState = () => (
-  <Flex
-    variant="center"
-    style={{
-      color: '#03BD0B',
-      fontFamily: 'sans-serif',
-      fontWeight: 500,
-      fontSize: 'min(5vw, 30px)',
-      marginTop: 20,
-      marginBottom: 25,
-      lineHeight: '200%',
-      textTransform: 'uppercase',
-    }}
-  >
-    <span style={{ marginRight: 16 }}>You win!</span>
+  <Flex variant="center" className="win-state">
+    <span>You win!</span>
     <span>🎊</span>
-    <a
-      href="http://1234.56.digital/"
-      target="_blank"
-      rel="noreferrer"
-      style={{ margin: '0 8px', color: '#F14E6B' }}
-    >
+    <a href="http://1234.56.digital/" target="_blank" rel="noreferrer">
       Click here
     </a>
     <span>🎊</span>

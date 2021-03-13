@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Flex } from '../components/Flex'
 import {
   getPossibleMoves,
   getActiveCheck,
@@ -85,8 +84,9 @@ export function LocalRoom({ aiRoom, setLocalRoom, setAIRoom }) {
   }
 
   return (
-    <Flex className="container" variant="column">
+    <div className="container full">
       <Action
+        style={{ margin: '12px auto', width: '100%', maxWidth: 500 }}
         onClick={() => {
           setAIRoom(false)
           setLocalRoom(false)
@@ -94,11 +94,13 @@ export function LocalRoom({ aiRoom, setLocalRoom, setAIRoom }) {
       >
         Leave
       </Action>
+
       <ChessRoom
         {...chess}
+        showMessages
         selectedTile={selectedTile}
         handleClickTile={handleClickTile}
       />
-    </Flex>
+    </div>
   )
 }

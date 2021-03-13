@@ -14,14 +14,19 @@ export function ChessRoom({
   handleClickTile,
   passantIndex,
   castleStatus,
+  showMessages,
 }) {
   if (!grid) return null
 
   return (
     <>
-      {/* {inStaleMate && 'Stalemate!'}
-      {activeCheckmate &&
-        `Checkmate! ${turnIndex === 0 ? 'Black' : 'White'} Wins`} */}
+      {showMessages && (inStaleMate || activeCheckmate) && (
+        <div className="message">
+          {inStaleMate && 'Stalemate!'}
+          {activeCheckmate &&
+            `Checkmate! ${turnIndex === 0 ? 'Black' : 'White'} Wins`}
+        </div>
+      )}
       <div className="grid">
         {grid.map((tile) => {
           const isMarked =
