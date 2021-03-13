@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/chess/static/css/main.fcd2f015.chunk.css",
-    "main.js": "/chess/static/js/main.07122f6c.chunk.js",
-    "main.js.map": "/chess/static/js/main.07122f6c.chunk.js.map",
-    "runtime-main.js": "/chess/static/js/runtime-main.8f462324.js",
-    "runtime-main.js.map": "/chess/static/js/runtime-main.8f462324.js.map",
-    "static/js/2.058a930f.chunk.js": "/chess/static/js/2.058a930f.chunk.js",
-    "static/js/2.058a930f.chunk.js.map": "/chess/static/js/2.058a930f.chunk.js.map",
-    "static/js/3.28c66a82.chunk.js": "/chess/static/js/3.28c66a82.chunk.js",
-    "static/js/3.28c66a82.chunk.js.map": "/chess/static/js/3.28c66a82.chunk.js.map",
+    "main.css": "/chess/static/css/main.6c6865f4.chunk.css",
+    "main.js": "/chess/static/js/main.526bd416.chunk.js",
+    "main.js.map": "/chess/static/js/main.526bd416.chunk.js.map",
+    "runtime-main.js": "/chess/static/js/runtime-main.6d04a1e4.js",
+    "runtime-main.js.map": "/chess/static/js/runtime-main.6d04a1e4.js.map",
+    "static/js/2.16b15af5.chunk.js": "/chess/static/js/2.16b15af5.chunk.js",
+    "static/js/2.16b15af5.chunk.js.map": "/chess/static/js/2.16b15af5.chunk.js.map",
+    "static/js/3.3c8032b4.chunk.js": "/chess/static/js/3.3c8032b4.chunk.js",
+    "static/js/3.3c8032b4.chunk.js.map": "/chess/static/js/3.3c8032b4.chunk.js.map",
     "index.html": "/chess/index.html",
-    "static/css/main.fcd2f015.chunk.css.map": "/chess/static/css/main.fcd2f015.chunk.css.map",
-    "static/js/2.058a930f.chunk.js.LICENSE.txt": "/chess/static/js/2.058a930f.chunk.js.LICENSE.txt",
-    "static/js/3.28c66a82.chunk.js.LICENSE.txt": "/chess/static/js/3.28c66a82.chunk.js.LICENSE.txt",
+    "static/css/main.6c6865f4.chunk.css.map": "/chess/static/css/main.6c6865f4.chunk.css.map",
+    "static/js/2.16b15af5.chunk.js.LICENSE.txt": "/chess/static/js/2.16b15af5.chunk.js.LICENSE.txt",
+    "static/js/3.3c8032b4.chunk.js.LICENSE.txt": "/chess/static/js/3.3c8032b4.chunk.js.LICENSE.txt",
     "static/media/assets_audio_win.8edc3aab.mp3": "/chess/static/media/assets_audio_win.8edc3aab.mp3"
   },
   "entrypoints": [
-    "static/js/runtime-main.8f462324.js",
-    "static/js/2.058a930f.chunk.js",
-    "static/css/main.fcd2f015.chunk.css",
-    "static/js/main.07122f6c.chunk.js"
+    "static/js/runtime-main.6d04a1e4.js",
+    "static/js/2.16b15af5.chunk.js",
+    "static/css/main.6c6865f4.chunk.css",
+    "static/js/main.526bd416.chunk.js"
   ]
 }
