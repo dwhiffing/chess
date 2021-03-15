@@ -15,6 +15,7 @@ export function ChessRoom({
   passantIndex,
   castleStatus,
   showMessages,
+  blockInput,
 }) {
   if (!grid) return null
 
@@ -48,7 +49,7 @@ export function ChessRoom({
               lastMoveIndex={lastMoveIndex}
               passantIndex={passantIndex}
               tile={{ ...tile, isTurn, isMarked, activeCheck }}
-              onClick={handleClickTile}
+              onClick={blockInput ? () => {} : handleClickTile}
             />
           )
         })}

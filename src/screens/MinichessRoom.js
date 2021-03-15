@@ -21,6 +21,7 @@ import winSound from '../assets/assets_audio_win.mp3'
 export function MinichessRoom({ aiRoom }) {
   const movetimeoutRef = useRef()
   const [turnIndex, setTurnIndex] = useState(0)
+  const [blockInput, setBlockInput] = useState(false)
   const [gameType, setGameType] = useState('petty')
   const [selectedTile, selectTile] = useState()
   const [passantIndex, setPassantIndex] = useState(null)
@@ -91,11 +92,13 @@ export function MinichessRoom({ aiRoom }) {
 
         moveTiles(selectedTile, tile)
         clearTimeout(movetimeoutRef.current)
+        setBlockInput(true)
         movetimeoutRef.current = setTimeout(
           () =>
             setGrid((grid) => {
               const move = getAIMove(grid)
               move && moveTiles(...move)
+              setBlockInput(false)
               return grid
             }),
           1000,
@@ -169,6 +172,7 @@ export function MinichessRoom({ aiRoom }) {
       <ChessRoom
         {...chess}
         alternate
+        blockInput={blockInput}
         selectedTile={selectedTile}
         handleClickTile={handleClickTile}
       />
