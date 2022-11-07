@@ -10,7 +10,7 @@ import './index.css'
 if (window.location.search !== '?minichess') {
   window.colyseus = new Client(
     process.env.NODE_ENV === 'production'
-      ? 'wss://daniel-chess.herokuapp.com'
+      ? 'wss://web-production-b05a.up.railway.app'
       : 'ws://localhost:3553',
   )
 }
